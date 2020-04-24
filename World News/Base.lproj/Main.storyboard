@@ -396,14 +396,14 @@
                                 </constraints>
                                 <items>
                                     <navigationItem title="World News" id="sKs-ZV-23g">
-                                        <barButtonItem key="leftBarButtonItem" title="back" id="HDd-lL-h1e">
+                                        <barButtonItem key="leftBarButtonItem" title="Location" id="HDd-lL-h1e">
                                             <connections>
-                                                <action selector="backBtn:" destination="pM2-Hy-Ph1" id="HMY-ob-SJf"/>
+                                                <action selector="locationBtn:" destination="pM2-Hy-Ph1" id="HMY-ob-SJf"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" title="Country" id="kA0-pV-Prf">
+                                        <barButtonItem key="rightBarButtonItem" title="Menu" id="kA0-pV-Prf">
                                             <connections>
-                                                <action selector="mainBtn:" destination="pM2-Hy-Ph1" id="wKU-Wy-8Tb"/>
+                                                <action selector="menuBtn:" destination="pM2-Hy-Ph1" id="wKU-Wy-8Tb"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>

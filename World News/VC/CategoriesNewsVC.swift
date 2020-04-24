@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import SafariServices
 
 
 class CategoriesNewsVC: UIViewController, UITableViewDataSource, UITableViewDelegate{
@@ -64,19 +64,26 @@ class CategoriesNewsVC: UIViewController, UITableViewDataSource, UITableViewDele
         cell.configure(with: article[indexPath.row])
         return cell
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let url = String(article[indexPath.row].url)
+        
+        let vc = SFSafariViewController(url: URL(string: url)!)
+        present(vc, animated: true, completion: nil)
+    }
     
-   @IBAction func backBtn(_ sender: Any) {
+    @IBAction func locationBtn(_ sender: Any) {
+        let selectedCountryVC = storyboard?.instantiateViewController(withIdentifier: "SelectedCountryVC") as! SelectedCountryVC
+        present(selectedCountryVC, animated: true, completion: nil)
+    }
     
+    @IBAction func menuBtn(_ sender: Any) {
         guard let MenuVC = storyboard?.instantiateViewController(withIdentifier: "MenuTableVC")  else {return}
-    
+        
         MenuVC.modalPresentationStyle = .overCurrentContext
         MenuVC.transitioningDelegate = self
         present(MenuVC, animated: true, completion: nil)
-    }
-    
-    @IBAction func mainBtn(_ sender: Any) {
-        let selectedCountryVC = storyboard?.instantiateViewController(withIdentifier: "SelectedCountryVC") as! SelectedCountryVC
-        present(selectedCountryVC, animated: true, completion: nil)
+        
+        
     }
     
 }
