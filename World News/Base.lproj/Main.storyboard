@@ -13,7 +13,7 @@
         <!--Selected CountryVC-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="SelectedCountryVC" customModule="World_News" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SelectedCountryVC" id="BYZ-38-t0r" customClass="SelectedCountryVC" customModule="World_News" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -401,6 +401,11 @@
                                                 <action selector="backBtn:" destination="pM2-Hy-Ph1" id="HMY-ob-SJf"/>
                                             </connections>
                                         </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Country" id="kA0-pV-Prf">
+                                            <connections>
+                                                <action selector="mainBtn:" destination="pM2-Hy-Ph1" id="wKU-Wy-8Tb"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -423,7 +428,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V9g-CN-0em" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2415" y="145"/>
+            <point key="canvasLocation" x="2401" y="92"/>
         </scene>
     </scenes>
     <resources>

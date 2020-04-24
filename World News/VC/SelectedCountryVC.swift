@@ -12,8 +12,8 @@ class SelectedCountryVC: UIViewController,UIPickerViewDelegate,UIPickerViewDataS
     @IBOutlet weak var pickerView: UIPickerView!
     
     let countries = ["United States","China","Italy","Egypt","United Kingdom","France","Germany"]
-    var mainCategories = MainCategories()
-    
+    var mainCategories = CategoriesNewsVC()
+    var countryName = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         pickerView.delegate = self
@@ -31,33 +31,33 @@ class SelectedCountryVC: UIViewController,UIPickerViewDelegate,UIPickerViewDataS
         return countries[row]
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        mainCategories.countryName = countries[row]
+        countryName = countries[row]
+        if countryName == "Egypt" {
+            countryName = "eg"
+        }else if countryName == "China" {
+            countryName = "cn"
+        }else if countryName == "Italy" {
+            countryName = "it"
+        }else if countryName == "United States" {
+            countryName = "us"
+        }else if countryName == "United Kingdom" {
+            countryName = "gb"
+        }else if countryName == "France" {
+            countryName = "fr"
+        }else if countryName == "Germany" {
+            countryName = "de"
+        }
         
     }
 
     @IBAction func nextBtn(_ sender: Any) {
-        if mainCategories.countryName == "Egypt" {
-            mainCategories.countryName = "eg"
-        }else if mainCategories.countryName == "China" {
-            mainCategories.countryName = "cn"
-        }else if mainCategories.countryName == "Italy" {
-            mainCategories.countryName = "it"
-        }else if mainCategories.countryName == "United States" {
-            mainCategories.countryName = "us"
-        }else if mainCategories.countryName == "United Kingdom" {
-            mainCategories.countryName = "gb"
-        }else if mainCategories.countryName == "France" {
-            mainCategories.countryName = "fr"
-        }else if mainCategories.countryName == "Germany" {
-            mainCategories.countryName = "de"
-        }
-        print(mainCategories.countryName)
+        print(countryName)
         performSegue(withIdentifier: "segueCountryName", sender: self)
         
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let newsVC = segue.destination as! NewsVC
-        newsVC.countryName = mainCategories.countryName
+        newsVC.countryName = countryName
         
         present(newsVC, animated: true, completion: nil)
     }

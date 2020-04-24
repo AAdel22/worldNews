@@ -81,7 +81,7 @@ class NewsVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
     @IBAction func menuBtn(_ sender: Any) {
         guard let MenuVC = storyboard?.instantiateViewController(withIdentifier: "MenuTableVC")  else {return}
         
-        MenuVC.modalPresentationStyle = .formSheet
+        MenuVC.modalPresentationStyle = .overCurrentContext
         MenuVC.transitioningDelegate = self
         present(MenuVC, animated: true, completion: nil)
     }

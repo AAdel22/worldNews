@@ -17,7 +17,7 @@ class CategoriesNewsVC: UIViewController, UITableViewDataSource, UITableViewDele
     var countryName = "eg"
     var category = ""
     
-    
+    let transtion = SlideInTransition()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +28,9 @@ class CategoriesNewsVC: UIViewController, UITableViewDataSource, UITableViewDele
     }
     
     func NewsArticle() {
-        
+        print(countryName)
         let url = URL(string: "https://newsapi.org/v2/top-headlines?country=\(countryName)&category=\(category)&apiKey=3fe5d71299684d52ab6c50568931d80c")
-       
+        
         URLSession.shared.dataTask(with: url!, completionHandler: ({ (data, response, error) in
             // convert to Json
             var result: ArticleResult?
@@ -66,10 +66,27 @@ class CategoriesNewsVC: UIViewController, UITableViewDataSource, UITableViewDele
     }
     
    @IBAction func backBtn(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+    
+        guard let MenuVC = storyboard?.instantiateViewController(withIdentifier: "MenuTableVC")  else {return}
+    
+        MenuVC.modalPresentationStyle = .overCurrentContext
+        MenuVC.transitioningDelegate = self
+        present(MenuVC, animated: true, completion: nil)
+    }
+    
+    @IBAction func mainBtn(_ sender: Any) {
+        let selectedCountryVC = storyboard?.instantiateViewController(withIdentifier: "SelectedCountryVC") as! SelectedCountryVC
+        present(selectedCountryVC, animated: true, completion: nil)
     }
     
 }
-
-
-
+extension CategoriesNewsVC: UIViewControllerTransitioningDelegate {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transtion.isPresenting = true
+        return transtion
+    }
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transtion.isPresenting = false
+        return transtion
+    }
+}
