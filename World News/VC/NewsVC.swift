@@ -7,29 +7,44 @@
 //
 
 import UIKit
+import SideMenu
 import SafariServices
 import Kingfisher
 
 class NewsVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
+    
     @IBOutlet weak var tableView: UITableView!
    
-    
-    let transtion = SlideInTransition()
     var countryName = ""
+    var category = ""
     var article = [Article]()
+    
+    private var refreshController:UIRefreshControl = UIRefreshControl()
+    
+    var menu: UISideMenuNavigationController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(articleTableViewCell.nib(), forCellReuseIdentifier: articleTableViewCell.identifier)
         tableView.delegate = self
         tableView.dataSource = self
+        
+        menu = UISideMenuNavigationController(rootViewController: MenuTableVC())
+        SideMenuManager.default.menuLeftNavigationController = menu
+        menu?.setNavigationBarHidden(true, animated: false)
+        SideMenuManager.default.menuAddPanGestureToPresent(toView: self.view)
+        
         NewsArticle()
+        refreshController.addTarget(self, action: #selector(refreachTableView), for: UIControlEvents.valueChanged)
+        self.tableView.refreshControl = refreshController
+        self.tableView.addSubview(refreshController)
+        print(category)
     }
     
     
     func NewsArticle() {
        
-        let url = URL(string: "https://newsapi.org/v2/top-headlines?country=\(countryName)&apiKey=3fe5d71299684d52ab6c50568931d80c")
+        let url = URL(string: "https://newsapi.org/v2/top-headlines?country=\(countryName)&category=\(category)&apiKey=3fe5d71299684d52ab6c50568931d80c")
         URLSession.shared.dataTask(with: url!, completionHandler: ({ (data, response, error) in
             // convert to Json
             var result: ArticleResult?
@@ -53,6 +68,12 @@ class NewsVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
             
         })).resume()
     }
+    
+    @objc func refreachTableView() {
+        
+        NewsArticle()
+        self.refreshController.endRefreshing()
+    }
     // tableView ....
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -64,8 +85,8 @@ class NewsVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let url = String(article[indexPath.row].url)
-       
+        let url = String(article[indexPath.row].url ?? "") 
+        
         let vc = SFSafariViewController(url: URL(string: url)!)
         present(vc, animated: true, completion: nil)
         
@@ -73,17 +94,29 @@ class NewsVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 180
     }
-    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let cell = cell as! articleTableViewCell
+        if !cell.isAnimated {
+            // the init state of the cell
+            cell.alpha = 0
+            let transform = CATransform3DTranslate(CATransform3DIdentity, -250, 20, 0)
+            cell.layer.transform = transform
+            
+            // animate the cell to the final state
+            UIView.animate(withDuration: 1.0) {
+                cell.alpha = 1.0
+                cell.layer.transform = CATransform3DIdentity
+            }
+            cell.isAnimated = true
+        }
+    }
     @IBAction func backBtn(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
     @IBAction func menuBtn(_ sender: Any) {
-        guard let MenuVC = storyboard?.instantiateViewController(withIdentifier: "MenuTableVC")  else {return}
         
-        MenuVC.modalPresentationStyle = .overCurrentContext
-        MenuVC.transitioningDelegate = self
-        present(MenuVC, animated: true, completion: nil)
+        present(menu!, animated: true, completion: nil)
     }
     
 }
@@ -91,25 +124,16 @@ struct ArticleResult: Codable {
     let articles: [Article]
 }
 struct Article: Codable {
-    let title: String
-    let description: String
-    let url: String
-    let urlToImage: String
-    let publishedAt: String
+    let title: String?
+    let description: String?
+    let url: String?
+    let urlToImage: String?
+    let publishedAt: String?
     
     private enum CodingKeys: String, CodingKey {
         case title, description, url, urlToImage, publishedAt
     }
 }
-extension NewsVC: UIViewControllerTransitioningDelegate {
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transtion.isPresenting = true
-        return transtion
-    }
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transtion.isPresenting = false
-        return transtion
-    }
-}
+
 
 

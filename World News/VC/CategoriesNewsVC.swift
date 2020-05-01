@@ -17,7 +17,7 @@ class CategoriesNewsVC: UIViewController, UITableViewDataSource, UITableViewDele
     var countryName = "eg"
     var category = ""
     
-    let transtion = SlideInTransition()
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,12 +65,27 @@ class CategoriesNewsVC: UIViewController, UITableViewDataSource, UITableViewDele
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let url = String(article[indexPath.row].url)
+        let url = String(article[indexPath.row].url ?? "")
         
         let vc = SFSafariViewController(url: URL(string: url)!)
         present(vc, animated: true, completion: nil)
     }
-    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let cell = cell as! categoriesNewsTableViewCell
+        if !cell.isAnimated {
+            // the init state of the cell
+            cell.alpha = 0
+            let transform = CATransform3DTranslate(CATransform3DIdentity, -250, 20, 0)
+            cell.layer.transform = transform
+            
+            // animate the cell to the final state
+            UIView.animate(withDuration: 1.0) {
+                cell.alpha = 1.0
+                cell.layer.transform = CATransform3DIdentity
+            }
+            cell.isAnimated = true
+        }
+    }
     @IBAction func locationBtn(_ sender: Any) {
         let selectedCountryVC = storyboard?.instantiateViewController(withIdentifier: "SelectedCountryVC") as! SelectedCountryVC
         present(selectedCountryVC, animated: true, completion: nil)
@@ -80,20 +95,11 @@ class CategoriesNewsVC: UIViewController, UITableViewDataSource, UITableViewDele
         guard let MenuVC = storyboard?.instantiateViewController(withIdentifier: "MenuTableVC")  else {return}
         
         MenuVC.modalPresentationStyle = .overCurrentContext
-        MenuVC.transitioningDelegate = self
+
         present(MenuVC, animated: true, completion: nil)
         
         
     }
     
 }
-extension CategoriesNewsVC: UIViewControllerTransitioningDelegate {
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transtion.isPresenting = true
-        return transtion
-    }
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transtion.isPresenting = false
-        return transtion
-    }
-}
+

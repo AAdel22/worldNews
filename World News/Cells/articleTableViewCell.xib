@@ -67,6 +67,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="articleBackgroundView" destination="H2p-sc-9uM" id="KeV-3J-Phe"/>
                 <outlet property="articleDescription" destination="CnO-kV-r7j" id="5ea-a0-gVY"/>
                 <outlet property="articleImageView" destination="ubx-Gm-vnq" id="hSv-iQ-a7D"/>
                 <outlet property="articlePublishAt" destination="vXa-fe-fXg" id="Fud-RT-f6k"/>

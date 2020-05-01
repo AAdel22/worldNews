@@ -7,4 +7,5 @@ target 'World News' do
 
   # Pods for World News
 	pod 'Kingfisher', '~> 3.13.1'
+	pod 'SideMenu', '~> 4.0.0'
 end

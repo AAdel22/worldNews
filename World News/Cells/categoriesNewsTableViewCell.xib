@@ -20,7 +20,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8QY-9t-Kfg">
-                        <rect key="frame" x="5" y="5" width="120" height="180"/>
+                        <rect key="frame" x="5" y="5" width="120" height="200"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="200" id="0Hy-CD-W1S"/>
                             <constraint firstAttribute="width" constant="120" id="qeL-a5-kZx"/>
@@ -69,6 +69,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="articleBackgroundView" destination="H2p-sc-9uM" id="Mds-6C-7oz"/>
                 <outlet property="articleDescriptionLabel" destination="xpl-1y-Lhf" id="527-Ip-Q3h"/>
                 <outlet property="articleImageView" destination="8QY-9t-Kfg" id="p8b-1L-Yo3"/>
                 <outlet property="articlePublichAtLabel" destination="cMB-6D-ziU" id="f02-re-kol"/>

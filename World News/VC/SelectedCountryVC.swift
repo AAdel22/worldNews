@@ -11,9 +11,11 @@ import UIKit
 class SelectedCountryVC: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource {
     @IBOutlet weak var pickerView: UIPickerView!
     
-    let countries = ["United States","China","Italy","Egypt","United Kingdom","France","Germany"]
-    var mainCategories = CategoriesNewsVC()
-    var countryName = ""
+    let countries: [Countries] = [
+    .unitedStates, .china, .italy, .egypt, .unitedKingdom, .france, .germany
+    ]
+    var selectedCountry: Countries?
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         pickerView.delegate = self
@@ -28,39 +30,51 @@ class SelectedCountryVC: UIViewController,UIPickerViewDelegate,UIPickerViewDataS
         return countries.count
     }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return countries[row]
+        return countries[row].rawValue.uppercased()
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        countryName = countries[row]
-        if countryName == "Egypt" {
-            countryName = "eg"
-        }else if countryName == "China" {
-            countryName = "cn"
-        }else if countryName == "Italy" {
-            countryName = "it"
-        }else if countryName == "United States" {
-            countryName = "us"
-        }else if countryName == "United Kingdom" {
-            countryName = "gb"
-        }else if countryName == "France" {
-            countryName = "fr"
-        }else if countryName == "Germany" {
-            countryName = "de"
-        }
-        
+        selectedCountry = countries[row]
     }
 
     @IBAction func nextBtn(_ sender: Any) {
-        print(countryName)
-        performSegue(withIdentifier: "segueCountryName", sender: self)
         
-    }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let newsVC = segue.destination as! NewsVC
-        newsVC.countryName = countryName
+        guard let selectedCountry = selectedCountry ?? countries.first else {
+            // show alert to select Country
+            return
+        }
         
+        let newsVC = storyboard?.instantiateViewController(withIdentifier: "NewsVC") as! NewsVC
+        
+        newsVC.countryName = selectedCountry.name
+        newsVC.modalPresentationStyle = .fullScreen
         present(newsVC, animated: true, completion: nil)
     }
-    
 }
-
+enum Countries: String {
+    case unitedStates
+    case china
+    case italy
+    case egypt
+    case unitedKingdom
+    case france
+    case germany
+    
+    var name: String {
+        switch self {
+        case .unitedStates:
+            return "us"
+        case .china:
+            return "cn"
+        case .italy:
+            return "it"
+        case .egypt:
+            return "eg"
+        case .unitedKingdom:
+            return "gb"
+        case .france:
+            return "fr"
+        case .germany:
+            return "de"
+        }
+    }
+}

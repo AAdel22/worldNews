@@ -4,7 +4,7 @@
 //
 //  Created by bl4ckra1sond3tre on 4/22/16.
 //
-//  The AnimatableImageView, AnimatedFrame and Animator is a modified version of 
+//  The AnimatableImageView, AnimatedFrame and Animator is a modified version of
 //  some classes from kaishin's Gifu project (https://github.com/kaishin/Gifu)
 //
 //  The MIT License (MIT)
@@ -30,7 +30,6 @@
 //
 //  The name and characters used in the demo of this software are property of their
 //  respective owners.
-
 import UIKit
 import ImageIO
 
@@ -149,12 +148,12 @@ open class AnimatedImageView: UIImageView {
         super.didMoveToSuperview()
         didMove()
     }
-
+    
     // This is for back compatibility that using regular UIImageView to show animated image.
-    override func shouldPreloadAllAnimation() -> Bool {
+    @objc override func shouldPreloadAllAnimation() -> Bool {
         return false
     }
-
+    
     // MARK: - Private method
     /// Reset the animator.
     private func reset() {
@@ -180,12 +179,12 @@ open class AnimatedImageView: UIImageView {
     /// Update the current frame with the displayLink duration.
     private func updateFrame() {
         let duration: CFTimeInterval
-
+        
         // CA based display link is opt-out from ProMotion by default.
-        // So the duration and its FPS might not match. 
+        // So the duration and its FPS might not match.
         // See [#718](https://github.com/onevcat/Kingfisher/issues/718)
         if #available(iOS 10.0, tvOS 10.0, *) {
-            // By setting CADisableMinimumFrameDuration to YES in Info.plist may 
+            // By setting CADisableMinimumFrameDuration to YES in Info.plist may
             // cause the preferredFramesPerSecond being 0
             if displayLink.preferredFramesPerSecond == 0 {
                 duration = displayLink.duration
@@ -196,7 +195,7 @@ open class AnimatedImageView: UIImageView {
         } else {
             duration = displayLink.duration
         }
-    
+        
         if animator?.updateCurrentFrame(duration: duration) ?? false {
             layer.setNeedsDisplay()
         }
@@ -306,7 +305,7 @@ class Animator {
              See also: http://nullsleep.tumblr.com/post/16524517190/animated-gif-minimum-frame-delay-browser.
              */
             return duration > 0.011 ? duration : defaultGIFFrameDuration
-        } ?? defaultGIFFrameDuration
+            } ?? defaultGIFFrameDuration
         
         let image = Image(cgImage: imageRef)
         let scaledImage: Image?
@@ -376,7 +375,7 @@ private func pure<T>(_ value: T) -> [T] {
 extension AnimatedImageView {
     // This is for back compatibility that using regular UIImageView to show GIF.
     @available(*, deprecated, renamed: "shouldPreloadAllAnimation")
-    override func shouldPreloadAllGIF() -> Bool {
+    @objc override func shouldPreloadAllGIF() -> Bool {
         return false
     }
 }
