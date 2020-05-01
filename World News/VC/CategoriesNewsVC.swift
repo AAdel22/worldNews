@@ -17,8 +17,6 @@ class CategoriesNewsVC: UIViewController, UITableViewDataSource, UITableViewDele
     var countryName = "eg"
     var category = ""
     
-   
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(categoriesNewsTableViewCell.nib(), forCellReuseIdentifier: categoriesNewsTableViewCell.identifier)

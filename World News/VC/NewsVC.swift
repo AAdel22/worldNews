@@ -28,8 +28,8 @@ class NewsVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         tableView.register(articleTableViewCell.nib(), forCellReuseIdentifier: articleTableViewCell.identifier)
         tableView.delegate = self
         tableView.dataSource = self
-        
-        menu = UISideMenuNavigationController(rootViewController: MenuTableVC())
+        let menuVC = storyboard?.instantiateViewController(withIdentifier: "MenuVC") as! MenuVC
+        menu = UISideMenuNavigationController(rootViewController: menuVC)
         SideMenuManager.default.menuLeftNavigationController = menu
         menu?.setNavigationBarHidden(true, animated: false)
         SideMenuManager.default.menuAddPanGestureToPresent(toView: self.view)
